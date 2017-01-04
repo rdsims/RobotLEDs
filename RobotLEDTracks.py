@@ -26,10 +26,11 @@ class RobotLEDPulse(RobotLEDTemplate):
         self.maxGlobalBrightness = maxGlobalBrightness
         super(RobotLEDPulse, self).__init__(numLEDs, 0, order)
         self.color = color
-        self.halfPeriod = period / 2.0
+        self.qtrPeriod = period / 4.0
         self.t = 0
         self.mBrightness = self.strip.getGlobalBrightness()
-        self.deltaBrightness = self.maxGlobalBrightness / self.halfPeriod
+        self.deltaBrightness = self.maxGlobalBrightness / self.qtrPeriod
+        self.state = 0
         self.init()
 
     def init(self):
@@ -39,11 +40,19 @@ class RobotLEDPulse(RobotLEDTemplate):
 
     def update(self):
         self.t += 1
-        if self.t > self.halfPeriod:
-            self.t -= self.halfPeriod
-            self.deltaBrightness = -self.deltaBrightness
+        if self.t > self.qtrPeriod:
+            self.t -= self.qtrPeriod
+            self.state += 1
+            if self.state >= 4:
+                self.state = 0
 
-        self.mBrightness += self.deltaBrightness
+        if self.state == 0:
+            self.mBrightness += self.deltaBrightness
+        elif self.state == 1:
+            self.mBrightness -= self.deltaBrightness
+        else:
+            self.mBrightness = self.mBrightness  # stay at 0 for full period
+
         self.mBrightness = max(self.mBrightness, 0)
         self.mBrightness = min(self.mBrightness, self.maxGlobalBrightness)
 

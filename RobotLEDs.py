@@ -10,7 +10,7 @@ fps = 50.0
 dt = 1.0 / fps
 maxSpeed = 100.0
 
-maxBrightness = 4
+maxBrightness = 8
 order = 'rgb'
 
 invalidColor  = 0x800080    # purple
@@ -38,7 +38,7 @@ prevOpMode = OpMode.INVALID    # set to an invalid value so we can tell when we 
 
 print('Starting robotLEDs.py')
 
-ledMode = RobotLEDSolid(numLEDs, maxBrightness, order, invalidColor)
+ledMode = RobotLEDPulse(numLEDs, maxBrightness, order, invalidColor, 4.0/dt)
 
 while True:  # Loop forever
 
@@ -49,7 +49,7 @@ while True:  # Loop forever
         if (opMode != OpMode.INVALID) and (prevOpMode == OpMode.INVALID):
             print('Connected to SmartDashboard')
             ledMode.cleanup
-            ledMode = RobotLEDPulse(numLEDs, 31, order, disabledColor, 2.0/dt)
+            ledMode = RobotLEDPulse(numLEDs, maxBrightness, order, disabledColor, 4.0/dt)
 
         if (opMode > OpMode.DISABLED) and (prevOpMode == OpMode.DISABLED):
             print('Robot Enabled')
