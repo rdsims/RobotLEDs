@@ -68,12 +68,12 @@ while True:  # Loop forever
         # run
         if (opMode > OpMode.DISABLED):
             try:
-                lSpeed = sd.getNumber('lVelocity')
-                rSpeed = sd.getNumber('rVelocity')
+                lSpeed = sd.getNumber('DriveStatus/lSpeed')
+                rSpeed = sd.getNumber('DriveStatus/rSpeed')
                 ledMode.setSpeed(lSpeed, rSpeed)
 
             except KeyError:
-                print('Error: "lVelocity", "rVelocity" not found in SmartDashboard')
+                print('Error: "DriveStatus/lSpeed", "DriveStatus/rSpeed" not found in SmartDashboard')
 
     except KeyError:
         print('Error: "OperationalMode" not found in SmartDashboard')
